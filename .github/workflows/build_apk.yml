@@ -31,19 +31,20 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Install Python Dependencies
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install "flet[all]"
+          pip install flet flet-geolocator requests folium "flet[all]"
 
       - name: Build Android APK
         run: |
           git config --global --add safe.directory "*"
-          flet build apk --permissions location
+          flet build apk --permissions location --verbose
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: CalorPulse-Release-APK
-          path: build/apk/app-release.apk
+          path: |
+            build/apk/*.apk
+            build/apk/app-release.apk
